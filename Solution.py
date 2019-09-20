@@ -57,11 +57,13 @@ def puzzle_structure_generator(m, n):
 
     for i in range(m):
 
-        # For East Wall, "E" = 0
-        puzzle_structure[i][0][3] = 0
+
 
         # For West Wall, "W" = 0
-        puzzle_structure[i][n-1][0] = 0
+        puzzle_structure[i][0][0] = 0
+
+        # For East Wall, "E" = 0
+        puzzle_structure[i][n-1][3] = 0
 
 
 
