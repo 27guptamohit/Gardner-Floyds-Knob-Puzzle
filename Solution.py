@@ -11,6 +11,24 @@ m = int(input(print("Enter the number of rows:")))
 n = int(input(print("Enter the number of columns:")))
 
 
+def organized_view(puzzle_generator):
+    """
+    This function will accept the numpy array and display it's contents in an organized way.
+    :param puzzle_generator:
+    :return:
+    """
+
+    for i in puzzle_structure:
+        # I am using map function because if I'll use the " ".join(i) code directly, it'll give an error about that
+        # it was supposed to get string but it got a list. Thus mapping the list element with the str data type.
+        # This loop is to systematically display the initial iteration before randomizing the possible turns
+        # from each turn.
+
+        print("      ".join(map(str, i)))
+
+
+    print("----------------------------------------------------------------\n\n")
+
 
 
 
@@ -78,14 +96,8 @@ puzzle_structure = puzzle_structure_generator(m,n)
 # In case if you search for the shape of the above generated puzzle when m * n = 3 * 3,
 # the shape would be ( 3, 3, 4 ) as I have designed it to be a multidimensional array.
 
+organized_view(puzzle_structure)
 
-for i in puzzle_structure:
-    # I am using map function because if I'll use the " ".join(i) code directly, it'll give an error about that
-    # it was supposed to get string but it got a list. Thus mapping the list element with the str data type.
-    # This loop is to systematically display the initial iteration before randomizing the possible turns
-    # from each turn.
-
-    print("      ".join(map(str, i)))
 
 
 
@@ -133,29 +145,66 @@ def random_entry_point(puzzle_structure):
     # Also, I will not randomly change the direction restrictions of the solution coordinates as they should be fixed.
 
 
-    solution_coordinate_sequence = [[entry_point, 0], [exit_point, n-1]]
+    solution_coordinate_sequence = [[random_entry_index, 0], [random_exit_index, n-1]]
 
 
-    return puzzle_structure, solution_coordinate_sequence
+    return puzzle_structure, list(solution_coordinate_sequence)
 
 
 
 
 puzzle_structure, solution_coordinate_sequence = random_entry_point(puzzle_structure)
 
+organized_view(puzzle_structure)
+
+
+def solution_generator(solution_coordinate_sequence):
+
+
+    coordinates = []
+
+    entry_coordinate = solution_coordinate_sequence[0]
+    exit_coordinate =  solution_coordinate_sequence[-1]
+
+
+    for i in range(n):
+
+        coordinates.append([entry_coordinate[0], i])
+
+
+
+    if entry_coordinate[0] > exit_coordinate[0]:
+
+        for i in reversed(range(exit_coordinate[0], entry_coordinate[0])):
+
+
+            coordinates.append([ i ,n-1])
+
+    if entry_coordinate[0] < exit_coordinate[0]:
+
+        for i in range(entry_coordinate[0] + 1, exit_coordinate[0] + 1):
+
+            coordinates.append([i, n-1])
+
+
+
+    return coordinates
+
+
+solution_coordinate_sequence = solution_generator(solution_coordinate_sequence)
+
+print(solution_coordinate_sequence)
 
 
 
 
 
 
-for i in puzzle_structure:
-    # I am using map function because if I'll use the " ".join(i) code directly, it'll give an error about that
-    # it was supposed to get string but it got a list. Thus mapping the list element with the str data type.
-    # This loop is to systematically display the initial iteration before randomizing the possible turns
-    # from each turn.
 
-    print("      ".join(map(str, i)))
+
+
+
+
 
 
 
