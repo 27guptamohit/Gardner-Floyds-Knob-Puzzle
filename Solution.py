@@ -193,6 +193,7 @@ def solution_generator(solution_coordinate_sequence):
 
 solution_coordinate_sequence = solution_generator(solution_coordinate_sequence)
 
+print("Below are the solution coordinates in sequence. \nIf any other sequence would be provided, you'll not reach the end point:")
 print(solution_coordinate_sequence)
 
 
