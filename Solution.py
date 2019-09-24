@@ -91,16 +91,6 @@ def puzzle_structure_generator(m, n):
 
 
 
-puzzle_structure = puzzle_structure_generator(m,n)
-
-# In case if you search for the shape of the above generated puzzle when m * n = 3 * 3,
-# the shape would be ( 3, 3, 4 ) as I have designed it to be a multidimensional array.
-
-organized_view(puzzle_structure)
-
-
-
-
 
 def random_entry_point(puzzle_structure):
     """
@@ -153,11 +143,6 @@ def random_entry_point(puzzle_structure):
 
 
 
-puzzle_structure, solution_coordinate_sequence = random_entry_point(puzzle_structure)
-
-organized_view(puzzle_structure)
-
-
 def solution_generator(solution_coordinate_sequence):
 
 
@@ -191,10 +176,98 @@ def solution_generator(solution_coordinate_sequence):
     return coordinates
 
 
+
+
+def random_direction_generator(puzzle_structure, solution_coordinate_sequence):
+
+
+    p_structure = puzzle_structure
+    solutions = solution_coordinate_sequence
+    all_coordinates = []
+    required_coordinates = []
+
+
+
+    # Generating the possible coordinates for the m * n puzzle
+
+    for i in range(m):
+
+        for j in range(n):
+
+            all_coordinates.append([i,j])
+
+
+
+    # Removing the coordinates that are in the solutions so that I would not mistakenly block the solution direction.
+
+    for i in all_coordinates:
+
+        if i not in solutions:
+            required_coordinates.append(i)
+
+
+    for i in required_coordinates:
+
+
+        for j in range(4):
+
+
+            # Now I am randomly generating one possible number, either '1' or '0'.
+            # I learnt the below one line of code from the below link:
+            # https://www.geeksforgeeks.org/python-select-random-value-from-a-list/
+            # I the number that I generated is '0' then I will replace the individual element in the direction list to '0'.
+
+
+            a = np.random.randint(2, size=1)
+
+            if a == 0:
+                p_structure[i[0], i[1], j] = 0
+
+
+    return p_structure
+
+
+# Step 1 : Generating the base structure of the puzzle
+
+puzzle_structure = puzzle_structure_generator(m,n)
+
+# In case if you search for the shape of the above generated puzzle when m * n = 3 * 3,
+# the shape would be ( 3, 3, 4 ) as I have designed it to be a multidimensional array.
+# Displaying the puzzle in an organized view:
+organized_view(puzzle_structure)
+
+
+
+# Step 2:
+# Generating random entry and exit points:
+
+puzzle_structure, solution_coordinate_sequence = random_entry_point(puzzle_structure)
+organized_view(puzzle_structure)
+
+
+
+
+# Step 3:
+# Generating the correct coordinate sequence of puzzle solution after randomly generating the
+# entry and exit points:
+
+
 solution_coordinate_sequence = solution_generator(solution_coordinate_sequence)
 
-print("Below are the solution coordinates in sequence. \nIf any other sequence would be provided, you'll not reach the end point:")
-print(solution_coordinate_sequence)
+# print("Below are the solution coordinates in sequence. \nIf any other sequence would be provided, you'll not reach the end point:")
+# print(solution_coordinate_sequence)
+# print("\n\n\n")
+
+
+
+
+# Step 4:
+
+# Now I will change the existing directions and generate random directions.
+
+puzzle_structure = random_direction_generator(puzzle_structure, solution_coordinate_sequence)
+organized_view(puzzle_structure)
+
 
 
 
