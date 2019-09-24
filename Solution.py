@@ -264,7 +264,6 @@ solution_coordinate_sequence = solution_generator(solution_coordinate_sequence)
 # Step 4:
 
 # Now I will change the existing directions and generate random directions.
-
 puzzle_structure = random_direction_generator(puzzle_structure, solution_coordinate_sequence)
 organized_view(puzzle_structure)
 
