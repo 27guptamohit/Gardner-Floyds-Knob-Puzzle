@@ -290,6 +290,7 @@ def game_board(m,n,puzzle_structure, entry_coordinate, exit_coordinate):
                 elif move_by_player == 'stop':
 
                     flag = False
+                    break
 
                 else:
                     print("Please enter the directions only from ['w', 'n', 's', 'e']")
@@ -298,10 +299,42 @@ def game_board(m,n,puzzle_structure, entry_coordinate, exit_coordinate):
                 zero_board[curr_x_coo][curr_y_coo] = puzzle_structure[curr_x_coo, curr_y_coo]
 
 
+
+
                 prev_x_coo = curr_x_coo
-                prev_y_coo = curr_x_coo
+                prev_y_coo = curr_y_coo
 
                 organized_view(zero_board)
+
+
+                a = puzzle_structure[curr_x_coo, curr_y_coo]
+                a = a[-1]
+
+                # Please read the warnings in the below comments which compelled me to write the below code.
+                # As numpy.str cannot be compared to any other non-numpy data type because of the disagreement
+                # between the numpy and the native python, I tried the below code instead.
+                # Here, I created a numpy array which contains the string "1" and not the value 1.
+                # Thus, it will be stored as numpy.str_ type element.
+
+                b = np.array(["1"])
+                b = b[0]
+
+
+
+                # I also received a warning over here which is mentioned below:
+                # FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+                # This warning is usually for numpy which also affects the matplotlib
+                # In short, there is a disagreement between numpy and native python when comparing the strings to numpy's numeric types
+                # https://stackoverflow.com/questions/40659212/futurewarning-elementwise-comparison-failed-returning-scalar-but-in-the-futur
+                # If we use == or 'in' to compare a string/integer to numpy ndarray, they aren't compatible
+
+                if a == b:
+
+                    flag = False
+                    print("Congratulations, you won the game.")
+                    break
+
+
 
         except IndexError:
 
@@ -309,6 +342,8 @@ def game_board(m,n,puzzle_structure, entry_coordinate, exit_coordinate):
             curr_x_coo = prev_x_coo
             zero_board[curr_x_coo][curr_y_coo] = "X"
             organized_view(zero_board)
+
+    return 0
 
 
 
@@ -324,7 +359,7 @@ puzzle_structure1 = puzzle_structure_generator(m,n)
 # In case if you search for the shape of the above generated puzzle when m * n = 3 * 3,
 # the shape would be ( 3, 3, 4 ) as I have designed it to be a multidimensional array.
 # Displaying the puzzle in an organized view:
-organized_view(puzzle_structure1)
+# organized_view(puzzle_structure1)
 
 
 
@@ -332,7 +367,7 @@ organized_view(puzzle_structure1)
 # Generating random entry and exit points:
 
 puzzle_structure2, solution_coordinate_sequence1 = random_entry_point(puzzle_structure1)
-organized_view(puzzle_structure2)
+# organized_view(puzzle_structure2)
 
 
 
@@ -355,6 +390,8 @@ solution_coordinate_sequence2 = solution_generator(solution_coordinate_sequence1
 
 # Now I will change the existing directions and generate random directions.
 puzzle_structure3 = random_direction_generator(puzzle_structure2, solution_coordinate_sequence2)
+print("This is the solution:")
+
 organized_view(puzzle_structure3)
 
 
